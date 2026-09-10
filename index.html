@@ -1,1 +1,897 @@
-<h1>hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital & Future Skills Gap Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Nunito:wght@600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Gifwyn brand tokens */
+    --navy-deep: #0C1B15;   /* Verdant Abyss — deepest background */
+    --navy: #1D393C;        /* Nordic — primary surface */
+    --navy-light: #23444A;  /* Nordic, lightened — card surface */
+    --teal: #A19ABD;        /* Grape Gatsby — accent/signature */
+    --teal-dark: #837AA0;   /* Grape Gatsby, darkened — hover/border */
+    --teal-glow: rgba(161, 154, 189, 0.22);
+    --white: #F6F4EF;       /* Speed of Light — primary text on dark */
+    --muted: rgba(180, 196, 195, 0.8); /* Misty Blue — secondary text */
+    --border: rgba(180, 196, 195, 0.16);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(circle at top, var(--navy) 0%, var(--navy-deep) 70%);
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 16px 60px;
+    line-height: 1.5;
+  }
+
+  #app {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .card {
+    background: var(--navy-light);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  }
+
+  .screen {
+    display: none;
+  }
+
+  .screen.active {
+    display: block;
+    animation: fadeIn 0.35s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 {
+    margin: 0 0 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--white);
+  }
+
+  h2 {
+    margin: 0 0 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  p {
+    color: var(--muted);
+    margin: 0 0 16px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .brand-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 12px var(--teal-glow);
+  }
+
+  .brand-label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .intro-list {
+    margin: 20px 0 28px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .intro-list li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .intro-list li:last-child {
+    border-bottom: none;
+  }
+
+  .intro-list .num {
+    flex: 0 0 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--teal-dark);
+    color: var(--navy-deep);
+    font-weight: 700;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--teal);
+    color: var(--navy-deep);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 14px 28px;
+    border-radius: 10px;
+    transition: transform 0.15s ease, background 0.15s ease;
+    width: 100%;
+  }
+
+  .btn-primary:hover {
+    background: #D4D0E2;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--teal);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--teal-dark);
+    width: 100%;
+    margin-top: 12px;
+    transition: background 0.15s ease;
+  }
+
+  .btn-secondary:hover {
+    background: var(--teal-glow);
+  }
+
+  /* Progress */
+  .progress-wrap {
+    margin-bottom: 24px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+  }
+
+  .progress-track {
+    height: 8px;
+    background: var(--navy-deep);
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal-dark), var(--teal));
+    border-radius: 999px;
+    transition: width 0.35s ease;
+  }
+
+  .area-tag {
+    display: inline-block;
+    background: var(--teal-glow);
+    color: var(--teal);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+
+  .question-text {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 28px;
+  }
+
+  .rating-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .rating-btn {
+    flex: 1;
+    background: var(--navy-deep);
+    border: 1px solid var(--border);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 16px 4px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+    font-size: 0.95rem;
+  }
+
+  .rating-btn .num-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  .rating-btn .num-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+
+  .rating-btn:hover {
+    border-color: var(--teal-dark);
+  }
+
+  .rating-btn.selected {
+    background: var(--teal-glow);
+    border-color: var(--teal);
+  }
+
+  .rating-btn.selected .num-circle {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--navy-deep);
+  }
+
+  .rating-btn.selected .num-label {
+    color: var(--teal);
+  }
+
+  .nav-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .nav-row .btn-secondary {
+    margin-top: 0;
+  }
+
+  /* Results */
+  .results-summary {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .overall-score {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--teal);
+  }
+
+  .overall-score span {
+    font-size: 1.1rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  #radar-canvas {
+    width: 100%;
+    max-width: 520px;
+    display: block;
+    margin: 12px auto 8px;
+  }
+
+  .ranked-list {
+    margin-top: 24px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ranked-item {
+    background: var(--navy-deep);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+
+  .ranked-item-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .ranked-item-name {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.98rem;
+  }
+
+  .ranked-item-score {
+    font-weight: 700;
+    color: var(--teal);
+    font-size: 0.98rem;
+    white-space: nowrap;
+  }
+
+  .ranked-item-score.low {
+    color: #D98F6C;
+  }
+
+  .ranked-item-bar-track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .ranked-item-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--teal-dark), var(--teal));
+  }
+
+  .ranked-item-bar-fill.low {
+    background: linear-gradient(90deg, #8A4E34, #D98F6C);
+  }
+
+  .recommendation {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .recommendation strong {
+    color: var(--white);
+  }
+
+  footer-note {
+    display: block;
+  }
+
+  @media (max-width: 480px) {
+    .card {
+      padding: 22px 18px;
+    }
+
+    .rating-row {
+      gap: 6px;
+    }
+
+    .rating-btn {
+      padding: 12px 2px 8px;
+    }
+
+    .num-label {
+      display: none;
+    }
+
+    h1 {
+      font-size: 1.35rem;
+    }
+
+    .question-text {
+      font-size: 1.08rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="card">
+
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <div class="brand-label">Skills Gap Assessment</div>
+    </div>
+
+    <!-- INTRO SCREEN -->
+    <div class="screen active" id="intro-screen">
+      <h1>Digital &amp; Future Skills Gap Assessment</h1>
+      <p>Answer 12 short questions about your team's digital and future skills. It takes about 3 minutes. At the end you'll get a visual radar chart showing your team's strengths and gaps, plus recommendations for any weaker areas.</p>
+      <ul class="intro-list">
+        <li><span class="num">1</span><span>12 questions across 6 skill areas — Data Literacy, AI Awareness, Cybersecurity, Digital Collaboration, Automation &amp; Tools, and Future Thinking.</span></li>
+        <li><span class="num">2</span><span>Rate your team from 1 (very weak) to 5 (very strong) for each question.</span></li>
+        <li><span class="num">3</span><span>Get a radar chart of your results plus practical next steps for any gaps.</span></li>
+      </ul>
+      <button class="btn-primary" id="start-btn">Start Assessment</button>
+    </div>
+
+    <!-- QUESTION SCREEN -->
+    <div class="screen" id="question-screen">
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="progress-text">Question 1 of 12</span>
+          <span id="progress-area">Data Literacy</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <div class="area-tag" id="question-area-tag">Data Literacy</div>
+      <div class="question-text" id="question-text">Question text goes here</div>
+
+      <div class="rating-row" id="rating-row">
+        <!-- rating buttons injected by JS -->
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" id="back-btn">Back</button>
+      </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div class="screen" id="results-screen">
+      <h1>Your Results</h1>
+      <p>Here's how your team's digital and future skills stack up. Areas below a score of 3 come with a quick recommendation.</p>
+
+      <div class="results-summary">
+        <div class="overall-score" id="overall-score">0.0 <span>/ 5 overall</span></div>
+      </div>
+
+      <canvas id="radar-canvas" width="500" height="500"></canvas>
+
+      <h2 style="margin-top: 28px;">Ranked Skill Areas</h2>
+      <ul class="ranked-list" id="ranked-list"></ul>
+
+      <button class="btn-primary" id="retake-btn" style="margin-top: 8px;">Retake Assessment</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Data ----------
+
+  var questions = [
+    { area: "Data Literacy", text: "How confident is your team at reading and interpreting data or reports?" },
+    { area: "Data Literacy", text: "How well does your team use data to make decisions day to day?" },
+    { area: "AI Awareness", text: "How aware is your team of how AI tools could apply to your business?" },
+    { area: "AI Awareness", text: "How much is your team currently using AI tools in their work?" },
+    { area: "Cybersecurity", text: "How well does your team follow safe online practices such as password hygiene and spotting phishing?" },
+    { area: "Cybersecurity", text: "How prepared is your team to respond if a cyber incident occurred?" },
+    { area: "Digital Collaboration", text: "How effectively does your team use digital tools to communicate and collaborate remotely?" },
+    { area: "Digital Collaboration", text: "How quickly does your team adapt to new digital communication platforms?" },
+    { area: "Automation & Tools", text: "How well does your team use software tools to automate repetitive tasks?" },
+    { area: "Automation & Tools", text: "How comfortable is your team learning and adopting new digital tools?" },
+    { area: "Future Thinking", text: "How open is your team to experimenting with new ways of working?" },
+    { area: "Future Thinking", text: "How well does your team anticipate and prepare for changes in your industry?" }
+  ];
+
+  var areaOrder = [
+    "Data Literacy",
+    "AI Awareness",
+    "Cybersecurity",
+    "Digital Collaboration",
+    "Automation & Tools",
+    "Future Thinking"
+  ];
+
+  var recommendations = {
+    "Data Literacy": "Introduce regular data reporting reviews and basic data training.",
+    "AI Awareness": "Run an AI awareness session to explore tools relevant to your business.",
+    "Cybersecurity": "Implement a short cybersecurity awareness programme for all staff.",
+    "Digital Collaboration": "Audit your collaboration tools and offer team training on their use.",
+    "Automation & Tools": "Identify repetitive tasks and explore tools that could automate them.",
+    "Future Thinking": "Create space for regular team discussions about industry trends and change."
+  };
+
+  var ratingLabels = {
+    1: "Very weak",
+    2: "Weak",
+    3: "Average",
+    4: "Strong",
+    5: "Very strong"
+  };
+
+  // ---------- State ----------
+
+  var answers = new Array(questions.length).fill(null);
+  var currentIndex = 0;
+
+  // ---------- Elements ----------
+
+  var introScreen = document.getElementById("intro-screen");
+  var questionScreen = document.getElementById("question-screen");
+  var resultsScreen = document.getElementById("results-screen");
+
+  var startBtn = document.getElementById("start-btn");
+  var backBtn = document.getElementById("back-btn");
+  var retakeBtn = document.getElementById("retake-btn");
+
+  var progressText = document.getElementById("progress-text");
+  var progressArea = document.getElementById("progress-area");
+  var progressFill = document.getElementById("progress-fill");
+  var questionAreaTag = document.getElementById("question-area-tag");
+  var questionText = document.getElementById("question-text");
+  var ratingRow = document.getElementById("rating-row");
+
+  var overallScoreEl = document.getElementById("overall-score");
+  var rankedListEl = document.getElementById("ranked-list");
+  var canvas = document.getElementById("radar-canvas");
+
+  // ---------- Screen switching ----------
+
+  function showScreen(screen) {
+    [introScreen, questionScreen, resultsScreen].forEach(function (s) {
+      s.classList.remove("active");
+    });
+    screen.classList.add("active");
+  }
+
+  // ---------- Question rendering ----------
+
+  function renderQuestion() {
+    var q = questions[currentIndex];
+
+    progressText.textContent = "Question " + (currentIndex + 1) + " of " + questions.length;
+    progressArea.textContent = q.area;
+    progressFill.style.width = ((currentIndex) / questions.length * 100) + "%";
+
+    questionAreaTag.textContent = q.area;
+    questionText.textContent = q.text;
+
+    backBtn.style.visibility = currentIndex === 0 ? "hidden" : "visible";
+
+    ratingRow.innerHTML = "";
+    for (var val = 1; val <= 5; val++) {
+      var btn = document.createElement("button");
+      btn.className = "rating-btn";
+      btn.type = "button";
+      if (answers[currentIndex] === val) {
+        btn.classList.add("selected");
+      }
+
+      var circle = document.createElement("span");
+      circle.className = "num-circle";
+      circle.textContent = val;
+
+      var label = document.createElement("span");
+      label.className = "num-label";
+      label.textContent = ratingLabels[val];
+
+      btn.appendChild(circle);
+      btn.appendChild(label);
+
+      (function (chosenVal) {
+        btn.addEventListener("click", function () {
+          answers[currentIndex] = chosenVal;
+          goNext();
+        });
+      })(val);
+
+      ratingRow.appendChild(btn);
+    }
+  }
+
+  function goNext() {
+    if (currentIndex < questions.length - 1) {
+      currentIndex++;
+      renderQuestion();
+    } else {
+      progressFill.style.width = "100%";
+      finishAssessment();
+    }
+  }
+
+  function goBack() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      renderQuestion();
+    }
+  }
+
+  // ---------- Results ----------
+
+  function computeAreaScores() {
+    var scores = {};
+    areaOrder.forEach(function (area) {
+      var vals = [];
+      questions.forEach(function (q, i) {
+        if (q.area === area) {
+          vals.push(answers[i]);
+        }
+      });
+      var sum = vals.reduce(function (a, b) { return a + b; }, 0);
+      scores[area] = sum / vals.length;
+    });
+    return scores;
+  }
+
+  function finishAssessment() {
+    var scores = computeAreaScores();
+    renderOverallScore(scores);
+    drawRadarChart(scores);
+    renderRankedList(scores);
+    showScreen(resultsScreen);
+  }
+
+  function renderOverallScore(scores) {
+    var total = 0;
+    areaOrder.forEach(function (area) { total += scores[area]; });
+    var avg = total / areaOrder.length;
+    overallScoreEl.innerHTML = avg.toFixed(1) + " <span>/ 5 overall</span>";
+  }
+
+  function renderRankedList(scores) {
+    var ranked = areaOrder.slice().sort(function (a, b) {
+      return scores[a] - scores[b];
+    });
+
+    rankedListEl.innerHTML = "";
+
+    ranked.forEach(function (area) {
+      var score = scores[area];
+      var isLow = score < 3;
+
+      var li = document.createElement("li");
+      li.className = "ranked-item";
+
+      var top = document.createElement("div");
+      top.className = "ranked-item-top";
+
+      var name = document.createElement("span");
+      name.className = "ranked-item-name";
+      name.textContent = area;
+
+      var scoreEl = document.createElement("span");
+      scoreEl.className = "ranked-item-score" + (isLow ? " low" : "");
+      scoreEl.textContent = score.toFixed(1) + " / 5";
+
+      top.appendChild(name);
+      top.appendChild(scoreEl);
+      li.appendChild(top);
+
+      var barTrack = document.createElement("div");
+      barTrack.className = "ranked-item-bar-track";
+      var barFill = document.createElement("div");
+      barFill.className = "ranked-item-bar-fill" + (isLow ? " low" : "");
+      barFill.style.width = (score / 5 * 100) + "%";
+      barTrack.appendChild(barFill);
+      li.appendChild(barTrack);
+
+      if (isLow) {
+        var rec = document.createElement("div");
+        rec.className = "recommendation";
+        rec.innerHTML = "<strong>Recommendation:</strong> " + recommendations[area];
+        li.appendChild(rec);
+      }
+
+      rankedListEl.appendChild(li);
+    });
+  }
+
+  // ---------- Radar chart (canvas) ----------
+
+  function drawRadarChart(scores) {
+    var ctx = canvas.getContext("2d");
+
+    // Make canvas crisp on high-DPI screens while keeping layout size fixed.
+    var displaySize = 500;
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = displaySize * dpr;
+    canvas.height = displaySize * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    var W = displaySize;
+    var H = displaySize;
+    var cx = W / 2;
+    var cy = H / 2;
+    var radius = W * 0.32;
+    var maxVal = 5;
+    var numAxes = areaOrder.length;
+    var angleStep = (Math.PI * 2) / numAxes;
+    var startAngle = -Math.PI / 2;
+
+    ctx.clearRect(0, 0, W, H);
+
+    function pointFor(index, value) {
+      var angle = startAngle + index * angleStep;
+      var r = (value / maxVal) * radius;
+      return {
+        x: cx + r * Math.cos(angle),
+        y: cy + r * Math.sin(angle)
+      };
+    }
+
+    // Grid rings (1 through 5)
+    ctx.strokeStyle = "rgba(180,196,195,0.18)";
+    ctx.lineWidth = 1;
+    for (var level = 1; level <= maxVal; level++) {
+      ctx.beginPath();
+      for (var i = 0; i <= numAxes; i++) {
+        var idx = i % numAxes;
+        var p = pointFor(idx, level);
+        if (i === 0) {
+          ctx.moveTo(p.x, p.y);
+        } else {
+          ctx.lineTo(p.x, p.y);
+        }
+      }
+      ctx.stroke();
+    }
+
+    // Axis lines
+    ctx.strokeStyle = "rgba(180,196,195,0.22)";
+    for (var a = 0; a < numAxes; a++) {
+      var outer = pointFor(a, maxVal);
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(outer.x, outer.y);
+      ctx.stroke();
+    }
+
+    // Max score outline (reference), dashed grape
+    ctx.beginPath();
+    ctx.setLineDash([5, 4]);
+    ctx.strokeStyle = "rgba(161, 154, 189, 0.6)";
+    ctx.lineWidth = 1.5;
+    for (var m = 0; m <= numAxes; m++) {
+      var mi = m % numAxes;
+      var mp = pointFor(mi, maxVal);
+      if (m === 0) {
+        ctx.moveTo(mp.x, mp.y);
+      } else {
+        ctx.lineTo(mp.x, mp.y);
+      }
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // User data polygon
+    ctx.beginPath();
+    areaOrder.forEach(function (area, i) {
+      var val = scores[area];
+      var p = pointFor(i, val);
+      if (i === 0) {
+        ctx.moveTo(p.x, p.y);
+      } else {
+        ctx.lineTo(p.x, p.y);
+      }
+    });
+    ctx.closePath();
+    ctx.fillStyle = "rgba(161, 154, 189, 0.35)";
+    ctx.fill();
+    ctx.strokeStyle = "#A19ABD";
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Data point dots
+    areaOrder.forEach(function (area, i) {
+      var val = scores[area];
+      var p = pointFor(i, val);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = "#23444A";
+      ctx.fill();
+      ctx.strokeStyle = "#A19ABD";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    });
+
+    // Axis labels
+    ctx.font = "700 12px 'Nunito', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif";
+    ctx.fillStyle = "#F6F4EF";
+    var labelRadius = radius + 34;
+
+    areaOrder.forEach(function (area, i) {
+      var angle = startAngle + i * angleStep;
+      var lx = cx + labelRadius * Math.cos(angle);
+      var ly = cy + labelRadius * Math.sin(angle);
+
+      // Choose text alignment based on horizontal position relative to centre.
+      var cosVal = Math.cos(angle);
+      if (Math.abs(cosVal) < 0.15) {
+        ctx.textAlign = "center";
+      } else if (cosVal > 0) {
+        ctx.textAlign = "left";
+      } else {
+        ctx.textAlign = "right";
+      }
+
+      // Adjust vertical alignment for top/bottom labels.
+      var sinVal = Math.sin(angle);
+      if (sinVal < -0.85) {
+        ctx.textBaseline = "bottom";
+      } else if (sinVal > 0.85) {
+        ctx.textBaseline = "top";
+      } else {
+        ctx.textBaseline = "middle";
+      }
+
+      // Wrap two-word labels onto two lines if needed for narrower screens.
+      var words = area.split(" ");
+      if (words.length > 2) {
+        var line1 = words.slice(0, 2).join(" ");
+        var line2 = words.slice(2).join(" ");
+        ctx.fillText(line1, lx, ly - 7);
+        ctx.fillText(line2, lx, ly + 7);
+      } else {
+        ctx.fillText(area, lx, ly);
+      }
+    });
+  }
+
+  // ---------- Reset ----------
+
+  function resetAssessment() {
+    answers = new Array(questions.length).fill(null);
+    currentIndex = 0;
+    renderQuestion();
+    showScreen(introScreen);
+  }
+
+  // ---------- Wire up events ----------
+
+  startBtn.addEventListener("click", function () {
+    currentIndex = 0;
+    renderQuestion();
+    showScreen(questionScreen);
+  });
+
+  backBtn.addEventListener("click", goBack);
+  retakeBtn.addEventListener("click", resetAssessment);
+
+  // Initial render (in case the browser retains scroll/tab state)
+  renderQuestion();
+})();
+</script>
+
+</body>
+</html>
