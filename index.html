@@ -396,6 +396,32 @@
     color: var(--white);
   }
 
+  .course-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .course-link:hover {
+    color: #D4D0E2;
+    border-bottom-color: currentColor;
+  }
+
+  .course-link-arrow {
+    transition: transform 0.15s ease;
+  }
+
+  .course-link:hover .course-link-arrow {
+    transform: translateX(2px);
+  }
+
   footer-note {
     display: block;
   }
@@ -524,12 +550,36 @@
   ];
 
   var recommendations = {
-    "Data Literacy": "Introduce regular data reporting reviews and basic data training.",
-    "AI Awareness": "Run an AI awareness session to explore tools relevant to your business.",
-    "Cybersecurity": "Implement a short cybersecurity awareness programme for all staff.",
-    "Digital Collaboration": "Audit your collaboration tools and offer team training on their use.",
-    "Automation & Tools": "Identify repetitive tasks and explore tools that could automate them.",
-    "Future Thinking": "Create space for regular team discussions about industry trends and change."
+    "Data Literacy": {
+      text: "Introduce regular data reporting reviews and basic data training.",
+      courseLabel: "Explore data science courses",
+      courseUrl: "https://www.futurelearn.com/subjects/science-engineering-and-maths-courses/data-science"
+    },
+    "AI Awareness": {
+      text: "Run an AI awareness session to explore tools relevant to your business.",
+      courseLabel: "Explore AI courses",
+      courseUrl: "https://www.futurelearn.com/subjects/it-and-computer-science-courses/artificial-intelligence"
+    },
+    "Cybersecurity": {
+      text: "Implement a short cybersecurity awareness programme for all staff.",
+      courseLabel: "Visit NCSC Cyber Aware",
+      courseUrl: "https://www.ncsc.gov.uk/cyberaware/home"
+    },
+    "Digital Collaboration": {
+      text: "Audit your collaboration tools and offer team training on their use.",
+      courseLabel: "Explore collaboration courses",
+      courseUrl: "https://www.futurelearn.com/courses/collections/collaboration"
+    },
+    "Automation & Tools": {
+      text: "Identify repetitive tasks and explore tools that could automate them.",
+      courseLabel: "Explore this automation course",
+      courseUrl: "https://www.futurelearn.com/courses/streamlining-business-operations-with-automation"
+    },
+    "Future Thinking": {
+      text: "Create space for regular team discussions about industry trends and change.",
+      courseLabel: "Explore this futures thinking course",
+      courseUrl: "https://www.coursera.org/learn/introduction-to-futures-thinking"
+    }
   };
 
   var ratingLabels = {
@@ -707,10 +757,20 @@
       li.appendChild(barTrack);
 
       if (isLow) {
+        var recInfo = recommendations[area];
+
         var rec = document.createElement("div");
         rec.className = "recommendation";
-        rec.innerHTML = "<strong>Recommendation:</strong> " + recommendations[area];
+        rec.innerHTML = "<strong>Recommendation:</strong> " + recInfo.text;
         li.appendChild(rec);
+
+        var link = document.createElement("a");
+        link.className = "course-link";
+        link.href = recInfo.courseUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.innerHTML = recInfo.courseLabel + " <span class=\"course-link-arrow\">&rarr;</span>";
+        li.appendChild(link);
       }
 
       rankedListEl.appendChild(li);
